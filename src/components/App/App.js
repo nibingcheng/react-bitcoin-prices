@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 import Home from "../Home/Home";
 import "./App.css";
+import { Route, Link, Switch, Redirect } from "react-router-dom";
+import Currencies from '../Currencies/Currencies';
+import Price from '../Price/Price';
 
 class App extends Component {
   constructor(props) {
@@ -19,14 +22,26 @@ class App extends Component {
     return (
       <div>
         <nav>
+          <Link to="/">
           <img
             src="https://en.bitcoin.it/w/images/en/2/29/BC_Logo_.png"
             alt=""
           />
+          </Link>
           <h1>Bitcoin prices</h1>
+          <Link to="/currencies">Currency List</Link>
         </nav>
         <main>
-          <Home />
+          <Switch>
+            <Route exact path="/"component={Home}/>
+            <Route path="/currencies"component={Currencies}/>
+            <Route path='/price/:currency'
+            render={routerProps=> <Price setPrice={this.setPrice} {...routerProps}
+            {...this.state}/>
+            }
+            />
+            <Route path="/currency" render={() => <Redirect to="/currencies" />} />
+          </Switch>
         </main>
       </div>
     );
